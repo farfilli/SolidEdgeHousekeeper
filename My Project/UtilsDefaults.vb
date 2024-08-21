@@ -111,7 +111,12 @@ Public Class UtilsDefaults
             End If
 
             If Not tf Then
-                ControlDict.Add(Ctrl.Name, Ctrl)
+                Try
+                    ControlDict.Add(Ctrl.Name, Ctrl)
+                Catch ex As Exception
+
+                End Try
+
             End If
         End If
 

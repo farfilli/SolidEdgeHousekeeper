@@ -146,7 +146,13 @@ Public Class Form_Main
                 Task.IsSelectedSheetmetal = False
                 Task.IsSelectedDraft = False
             End If
-            tmpTaskPanel.Controls.Add(Task.TaskControl)
+            Try
+                If Not IsNothing(tmpTaskPanel) Then tmpTaskPanel.Controls.Add(Task.TaskControl)
+
+            Catch ex As Exception
+
+            End Try
+
         Next
 
         Me.TemplatePropertyDict = UP.GetTemplatePropertyDict()
@@ -158,6 +164,23 @@ Public Class Form_Main
         If Me.CheckForNewerVersion Then
             UP.CheckForNewerVersion(Me.Version)
         End If
+
+
+
+
+        'Setting up the splitcontainer just for testing purposes ***********************************
+        SplitContainer1.Panel2Collapsed = True
+
+        For Each tmpcontrol As Control In TabPageTasks.Controls
+
+            SplitContainer1.Panel2.Controls.Add(tmpcontrol)
+
+        Next
+
+        SplitContainer1.Panel2.Controls.Add(TaskFooterPanel)
+        TabControl1.TabPages.Remove(TabPageTasks)
+
+        ToolStripTasks.SendToBack()
 
     End Sub
 
@@ -1785,6 +1808,21 @@ Public Class Form_Main
         Dim HelpURL = UD.GenerateVersionURL(Tag)
 
         System.Diagnostics.Process.Start(HelpURL)
+
+    End Sub
+
+
+    ' Button to expand\collapse
+    Private Sub BT_TasksPlan_Click(sender As Object, e As EventArgs) Handles BT_TasksPlan.Click
+
+        If SplitContainer1.Panel2Collapsed Then
+            Me.Width = Me.Width * 2
+            SplitContainer1.SplitterDistance = CType(SplitContainer1.Width / 2, Integer) ' CType(Me.Width / 2, Integer)
+            SplitContainer1.Panel2Collapsed = False
+        Else
+            Me.Width = CType(Me.Width / 2, Integer)
+            SplitContainer1.Panel2Collapsed = True
+        End If
 
     End Sub
 
