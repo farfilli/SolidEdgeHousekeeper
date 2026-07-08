@@ -1680,11 +1680,13 @@ Public Class Form_Main
     ' FORM LOAD
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Tema scuro (SE-Theme.vb + SE-ThemeApplier.vb).
+        ' La palette va impostata PRIMA di Startup (che genera le immagini di
+        ' spunta a tema); Apply va DOPO, per rimpiazzare il renderer MySR.
+        UiTheme.SetTheme(True)
+
         Startup(SavingPresets:=False)
 
-        ' Tema scuro (SE-Theme.vb + SE-ThemeApplier.vb).
-        ' Va applicato DOPO Startup, che assegna il renderer MySR ai toolstrip.
-        UiTheme.SetTheme(True)
         ThemeApplier.Apply(Me)
         ThemeApplier.ApplyToolStrip(Menu_ListViewFile)
     End Sub
@@ -1698,11 +1700,11 @@ Public Class Form_Main
 
         If CheckBoxEnablePropertyFilter.Checked Then
 
-            CheckBoxEnablePropertyFilter.Image = My.Resources.Checked
+            CheckBoxEnablePropertyFilter.Image = ThemeApplier.CheckedImage
             new_ButtonPropertyFilter.Enabled = True
 
         Else
-            CheckBoxEnablePropertyFilter.Image = My.Resources.Unchecked
+            CheckBoxEnablePropertyFilter.Image = ThemeApplier.UncheckedImage
             new_ButtonPropertyFilter.Enabled = False
         End If
 
@@ -1714,10 +1716,10 @@ Public Class Form_Main
         Me.EnableFileWildcard = CheckBoxEnableFileWildcard.Checked
 
         If CheckBoxEnableFileWildcard.Checked Then
-            CheckBoxEnableFileWildcard.Image = My.Resources.Checked
+            CheckBoxEnableFileWildcard.Image = ThemeApplier.CheckedImage
             ComboBoxFileWildcard.Enabled = True
         Else
-            CheckBoxEnableFileWildcard.Image = My.Resources.Unchecked
+            CheckBoxEnableFileWildcard.Image = ThemeApplier.UncheckedImage
             ComboBoxFileWildcard.Enabled = False
         End If
 
@@ -2340,8 +2342,8 @@ Public Class Form_Main
         CaricaImmagine16x16(TabPage_ImageList, "dft", My.Resources.dft)
         CaricaImmagine16x16(TabPage_ImageList, "par", My.Resources.par)
         CaricaImmagine16x16(TabPage_ImageList, "psm", My.Resources.psm)
-        CaricaImmagine16x16(TabPage_ImageList, "Checked", My.Resources.Checked)
-        CaricaImmagine16x16(TabPage_ImageList, "Unchecked", My.Resources.Unchecked)
+        CaricaImmagine16x16(TabPage_ImageList, "Checked", ThemeApplier.CheckedImage)
+        CaricaImmagine16x16(TabPage_ImageList, "Unchecked", ThemeApplier.UncheckedImage)
         CaricaImmagine16x16(TabPage_ImageList, "config", My.Resources.config)
         CaricaImmagine16x16(TabPage_ImageList, "Help", My.Resources.Help)
         CaricaImmagine16x16(TabPage_ImageList, "Info", My.Resources.Info)
@@ -3162,6 +3164,17 @@ Public Class Form_Main
 
     Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
 
+        ' SHIFT+Click: commuta tema scuro <-> chiaro.
+        If (Control.ModifierKeys And Keys.Shift) = Keys.Shift Then
+            UiTheme.SetTheme(Not UiTheme.IsDark)
+            ThemeApplier.Apply(Me)
+            ThemeApplier.ApplyToolStrip(Menu_ListViewFile)
+            CaricaImmagine16x16(TabPage_ImageList, "Checked", ThemeApplier.CheckedImage)
+            CaricaImmagine16x16(TabPage_ImageList, "Unchecked", ThemeApplier.UncheckedImage)
+            Refresh()
+            Return
+        End If
+
         Dim UD As New UtilsDocumentation
 
         If ModifierKeys = Keys.Alt + Keys.Control Then
@@ -3190,294 +3203,294 @@ Public Class Form_Main
     Private Sub RadioButtonStatusAtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoA.CheckedChanged
         If RadioButtonStatusAtoA.Checked Then
             Me.StatusAtoX = "Available"
-            RadioButtonStatusAtoA.Image = My.Resources.Checked
+            RadioButtonStatusAtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusAtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoB.CheckedChanged
         If RadioButtonStatusAtoB.Checked Then
             Me.StatusAtoX = "Baselined"
-            RadioButtonStatusAtoB.Image = My.Resources.Checked
+            RadioButtonStatusAtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusAtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoIR.CheckedChanged
         If RadioButtonStatusAtoIR.Checked Then
             Me.StatusAtoX = "InReview"
-            RadioButtonStatusAtoIR.Image = My.Resources.Checked
+            RadioButtonStatusAtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusAtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoIW.CheckedChanged
         If RadioButtonStatusAtoIW.Checked Then
             Me.StatusAtoX = "InWork"
-            RadioButtonStatusAtoIW.Image = My.Resources.Checked
+            RadioButtonStatusAtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusAtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoO.CheckedChanged
         If RadioButtonStatusAtoO.Checked Then
             Me.StatusAtoX = "Obsolete"
-            RadioButtonStatusAtoO.Image = My.Resources.Checked
+            RadioButtonStatusAtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusAtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusAtoR.CheckedChanged
         If RadioButtonStatusAtoR.Checked Then
             Me.StatusAtoX = "Released"
-            RadioButtonStatusAtoR.Image = My.Resources.Checked
+            RadioButtonStatusAtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusAtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusAtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
     Private Sub RadioButtonStatusBtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoA.CheckedChanged
         If RadioButtonStatusBtoA.Checked Then
             Me.StatusBtoX = "Available"
-            RadioButtonStatusBtoA.Image = My.Resources.Checked
+            RadioButtonStatusBtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusBtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoB.CheckedChanged
         If RadioButtonStatusBtoB.Checked Then
             Me.StatusBtoX = "Baselined"
-            RadioButtonStatusBtoB.Image = My.Resources.Checked
+            RadioButtonStatusBtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusBtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoIR.CheckedChanged
         If RadioButtonStatusBtoIR.Checked Then
             Me.StatusBtoX = "InReview"
-            RadioButtonStatusBtoIR.Image = My.Resources.Checked
+            RadioButtonStatusBtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusBtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoIW.CheckedChanged
         If RadioButtonStatusBtoIW.Checked Then
             Me.StatusBtoX = "InWork"
-            RadioButtonStatusBtoIW.Image = My.Resources.Checked
+            RadioButtonStatusBtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusBtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoO.CheckedChanged
         If RadioButtonStatusBtoO.Checked Then
             Me.StatusBtoX = "Obsolete"
-            RadioButtonStatusBtoO.Image = My.Resources.Checked
+            RadioButtonStatusBtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusBtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusBtoR.CheckedChanged
         If RadioButtonStatusBtoR.Checked Then
             Me.StatusBtoX = "Released"
-            RadioButtonStatusBtoR.Image = My.Resources.Checked
+            RadioButtonStatusBtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusBtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusBtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
     Private Sub RadioButtonStatusIRtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoA.CheckedChanged
         If RadioButtonStatusIRtoA.Checked Then
             Me.StatusIRtoX = "Available"
-            RadioButtonStatusIRtoA.Image = My.Resources.Checked
+            RadioButtonStatusIRtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIRtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoB.CheckedChanged
         If RadioButtonStatusIRtoB.Checked Then
             Me.StatusIRtoX = "Baselined"
-            RadioButtonStatusIRtoB.Image = My.Resources.Checked
+            RadioButtonStatusIRtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIRtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoIR.CheckedChanged
         If RadioButtonStatusIRtoIR.Checked Then
             Me.StatusIRtoX = "InReview"
-            RadioButtonStatusIRtoIR.Image = My.Resources.Checked
+            RadioButtonStatusIRtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIRtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoIW.CheckedChanged
         If RadioButtonStatusIRtoIW.Checked Then
             Me.StatusIRtoX = "InWork"
-            RadioButtonStatusIRtoIW.Image = My.Resources.Checked
+            RadioButtonStatusIRtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIRtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoO.CheckedChanged
         If RadioButtonStatusIRtoO.Checked Then
             Me.StatusIRtoX = "Obsolete"
-            RadioButtonStatusIRtoO.Image = My.Resources.Checked
+            RadioButtonStatusIRtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIRtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIRtoR.CheckedChanged
         If RadioButtonStatusIRtoR.Checked Then
             Me.StatusIRtoX = "Released"
-            RadioButtonStatusIRtoR.Image = My.Resources.Checked
+            RadioButtonStatusIRtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIRtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusIRtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
     Private Sub RadioButtonStatusIWtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoA.CheckedChanged
         If RadioButtonStatusIWtoA.Checked Then
             Me.StatusIWtoX = "Available"
-            RadioButtonStatusIWtoA.Image = My.Resources.Checked
+            RadioButtonStatusIWtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIWtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoB.CheckedChanged
         If RadioButtonStatusIWtoB.Checked Then
             Me.StatusIWtoX = "Baselined"
-            RadioButtonStatusIWtoB.Image = My.Resources.Checked
+            RadioButtonStatusIWtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIWtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoIR.CheckedChanged
         If RadioButtonStatusIWtoIR.Checked Then
             Me.StatusIWtoX = "InReview"
-            RadioButtonStatusIWtoIR.Image = My.Resources.Checked
+            RadioButtonStatusIWtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIWtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoIW.CheckedChanged
         If RadioButtonStatusIWtoIW.Checked Then
             Me.StatusIWtoX = "InWork"
-            RadioButtonStatusIWtoIW.Image = My.Resources.Checked
+            RadioButtonStatusIWtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIWtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoO.CheckedChanged
         If RadioButtonStatusIWtoO.Checked Then
             Me.StatusIWtoX = "Obsolete"
-            RadioButtonStatusIWtoO.Image = My.Resources.Checked
+            RadioButtonStatusIWtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusIWtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusIWtoR.CheckedChanged
         If RadioButtonStatusIWtoR.Checked Then
             Me.StatusIWtoX = "Released"
-            RadioButtonStatusIWtoR.Image = My.Resources.Checked
+            RadioButtonStatusIWtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusIWtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusIWtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
     Private Sub RadioButtonStatusOtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoA.CheckedChanged
         If RadioButtonStatusOtoA.Checked Then
             Me.StatusOtoX = "Available"
-            RadioButtonStatusOtoA.Image = My.Resources.Checked
+            RadioButtonStatusOtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusOtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoB.CheckedChanged
         If RadioButtonStatusOtoB.Checked Then
             Me.StatusOtoX = "Baselined"
-            RadioButtonStatusOtoB.Image = My.Resources.Checked
+            RadioButtonStatusOtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusOtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoIR.CheckedChanged
         If RadioButtonStatusOtoIR.Checked Then
             Me.StatusOtoX = "InReview"
-            RadioButtonStatusOtoIR.Image = My.Resources.Checked
+            RadioButtonStatusOtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusOtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoIW.CheckedChanged
         If RadioButtonStatusOtoIW.Checked Then
             Me.StatusOtoX = "InWork"
-            RadioButtonStatusOtoIW.Image = My.Resources.Checked
+            RadioButtonStatusOtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusOtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoO.CheckedChanged
         If RadioButtonStatusOtoO.Checked Then
             Me.StatusOtoX = "Obsolete"
-            RadioButtonStatusOtoO.Image = My.Resources.Checked
+            RadioButtonStatusOtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusOtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusOtoR.CheckedChanged
         If RadioButtonStatusOtoR.Checked Then
             Me.StatusOtoX = "Released"
-            RadioButtonStatusOtoR.Image = My.Resources.Checked
+            RadioButtonStatusOtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusOtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusOtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
     Private Sub RadioButtonStatusRtoA_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoA.CheckedChanged
         If RadioButtonStatusRtoA.Checked Then
             Me.StatusRtoX = "Available"
-            RadioButtonStatusRtoA.Image = My.Resources.Checked
+            RadioButtonStatusRtoA.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoA.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoA.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusRtoB_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoB.CheckedChanged
         If RadioButtonStatusRtoB.Checked Then
             Me.StatusRtoX = "Baselined"
-            RadioButtonStatusRtoB.Image = My.Resources.Checked
+            RadioButtonStatusRtoB.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoB.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoB.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusRtoIR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoIR.CheckedChanged
         If RadioButtonStatusRtoIR.Checked Then
             Me.StatusRtoX = "InReview"
-            RadioButtonStatusRtoIR.Image = My.Resources.Checked
+            RadioButtonStatusRtoIR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoIR.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoIR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusRtoIW_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoIW.CheckedChanged
         If RadioButtonStatusRtoIW.Checked Then
             Me.StatusRtoX = "InWork"
-            RadioButtonStatusRtoIW.Image = My.Resources.Checked
+            RadioButtonStatusRtoIW.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoIW.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoIW.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusRtoO_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoO.CheckedChanged
         If RadioButtonStatusRtoO.Checked Then
             Me.StatusRtoX = "Obsolete"
-            RadioButtonStatusRtoO.Image = My.Resources.Checked
+            RadioButtonStatusRtoO.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoO.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoO.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
     Private Sub RadioButtonStatusRtoR_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonStatusRtoR.CheckedChanged
         If RadioButtonStatusRtoR.Checked Then
             Me.StatusRtoX = "Released"
-            RadioButtonStatusRtoR.Image = My.Resources.Checked
+            RadioButtonStatusRtoR.Image = ThemeApplier.CheckedImage
         Else
-            RadioButtonStatusRtoR.Image = My.Resources.Unchecked
+            RadioButtonStatusRtoR.Image = ThemeApplier.UncheckedImage
         End If
     End Sub
 
@@ -4108,65 +4121,144 @@ Public Class Form_Main
 
     Private Sub ListViewFiles_DrawColumnHeader(sender As Object, e As DrawListViewColumnHeaderEventArgs) Handles ListViewFiles.DrawColumnHeader
 
-        e.DrawDefault = True  ' Set ownerdraw.  ######## SET TO FALSE TO USE EXPERIMENTAL CODE
+        ' Header a tema (SE-Theme): sfondo, testo, separatori e freccia di ordinamento.
+        e.DrawDefault = False
 
-        '####### Scope is to have better column header style (the default has the vertical line missalligned
-        '####### Second scope is to show the sorting order arrow on header
+        Dim g = e.Graphics
 
+        Using br As New SolidBrush(UiTheme.BgSidebar)
+            g.FillRectangle(br, e.Bounds)
+        End Using
 
-        '############## Experimental number 1 ##################################################################################################
-        'e.Graphics.FillRectangle(SystemBrushes.Menu, e.Bounds)
-        'e.Graphics.DrawRectangle(SystemPens.GradientInactiveCaption, New Rectangle(e.Bounds.X, 0, e.Bounds.Width, e.Bounds.Height))
+        Dim flags As TextFormatFlags = TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine Or TextFormatFlags.EndEllipsis
+        Select Case e.Header.TextAlign
+            Case HorizontalAlignment.Center
+                flags = flags Or TextFormatFlags.HorizontalCenter
+            Case HorizontalAlignment.Right
+                flags = flags Or TextFormatFlags.Right
+        End Select
 
+        Dim tr As Rectangle = Rectangle.Inflate(e.Bounds, -6, 0)
 
-        ''TEXT
+        ' Freccia di ordinamento sulla colonna attiva.
+        If lvwColumnSorter IsNot Nothing AndAlso e.ColumnIndex = lvwColumnSorter.SortColumn Then
+            Dim cx As Integer = e.Bounds.Right - 14
+            Dim cy As Integer = e.Bounds.Top + e.Bounds.Height \ 2
+            Dim pts(2) As Point
 
-        'Dim textAlign As HorizontalAlignment = e.Header.TextAlign
-        'Dim flags As TextFormatFlags = If((textAlign = HorizontalAlignment.Left), TextFormatFlags.GlyphOverhangPadding, If((textAlign = HorizontalAlignment.Center), TextFormatFlags.HorizontalCenter, TextFormatFlags.Right))
+            If lvwColumnSorter.Order = SortOrder.Ascending Then
+                pts(0) = New Point(cx - 4, cy + 2)
+                pts(1) = New Point(cx + 4, cy + 2)
+                pts(2) = New Point(cx, cy - 3)
+            Else
+                pts(0) = New Point(cx - 4, cy - 2)
+                pts(1) = New Point(cx + 4, cy - 2)
+                pts(2) = New Point(cx, cy + 3)
+            End If
 
-        ''(I added this line)
-        'flags = (flags Or TextFormatFlags.VerticalCenter)
+            Using ab As New SolidBrush(UiTheme.Accent)
+                g.FillPolygon(ab, pts)
+            End Using
 
-        'Dim text As String = e.Header.Text
-        'Dim width As Integer = TextRenderer.MeasureText(" ", e.Font).Width
-        'Bounds = Rectangle.Inflate(e.Bounds, -width, 0)
-        'TextRenderer.DrawText(e.Graphics, [text], e.Font, bounds, e.ForeColor, flags)
-        '############################################################################################################################################
+            tr.Width -= 14
+        End If
 
+        TextRenderer.DrawText(g, e.Header.Text, e.Font, tr, UiTheme.Txt, flags)
 
-
-
-        '############## Experimental number 2 ##################################################################################################
-        'Dim state = If(e.State = ListViewItemStates.Selected, VisualStyleElement.Header.Item.Hot, VisualStyleElement.Header.Item.Normal)
-        'Dim sortOrder = If(lvwColumnSorter.Order = Windows.Forms.SortOrder.Descending, VisualStyleElement.Header.SortArrow.SortedUp, VisualStyleElement.Header.SortArrow.SortedDown)
-        'Dim itemRenderer = New VisualStyleRenderer(state)
-        'Dim sortRenderer = New VisualStyleRenderer(sortOrder)
-        'Dim r = e.Bounds
-        'r.X += 1
-
-        'itemRenderer.DrawBackground(e.Graphics, r)
-        'r.Inflate(-2, 0)
-        'Dim flags1 = TextFormatFlags.Left Or TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine
-        'itemRenderer.DrawText(e.Graphics, r, e.Header.Text, False, flags1)
-        'Dim d = SystemInformation.VerticalScrollBarWidth
-
-        'If Not IsNothing(lvwColumnSorter) Then
-        '    If e.ColumnIndex = lvwColumnSorter.SortColumn Then sortRenderer.DrawBackground(e.Graphics, New Rectangle(r.Right - d, r.Top, d, r.Height))
-        'End If
-        '############################################################################################################################################
-
-
-
-
+        Using pn As New Pen(UiTheme.Border, 1.0F)
+            g.DrawLine(pn, e.Bounds.Left, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1)
+            g.DrawLine(pn, e.Bounds.Right - 1, e.Bounds.Top + 4, e.Bounds.Right - 1, e.Bounds.Bottom - 5)
+        End Using
 
     End Sub
 
     Private Sub ListViewFiles_DrawItem(sender As Object, e As DrawListViewItemEventArgs) Handles ListViewFiles.DrawItem
-        e.DrawDefault = True
+        ' Fondo riga a tema; le celle vengono ridisegnate da DrawSubItem.
+        e.DrawDefault = False
+        Using br As New SolidBrush(If(e.Item.Selected, UiTheme.BgFieldHi, UiTheme.BgField))
+            e.Graphics.FillRectangle(br, e.Bounds)
+        End Using
     End Sub
 
     Private Sub ListViewFiles_DrawSubItem(sender As Object, e As DrawListViewSubItemEventArgs) Handles ListViewFiles.DrawSubItem
-        e.DrawDefault = True
+
+        e.DrawDefault = False
+
+        Dim lv As ListView = DirectCast(sender, ListView)
+        Dim g = e.Graphics
+        Dim selected As Boolean = e.Item.Selected
+
+        ' Sfondo cella: selezione > colore custom della cella > tema.
+        Dim bg As Color
+        If selected Then
+            bg = UiTheme.BgFieldHi
+        Else
+            Dim c As Color = e.SubItem.BackColor
+            If c.A = 0 OrElse
+               c.ToArgb() = Color.White.ToArgb() OrElse
+               c.ToArgb() = SystemColors.Window.ToArgb() OrElse
+               c.ToArgb() = SystemColors.Control.ToArgb() Then
+                bg = UiTheme.BgField
+            Else
+                bg = c
+            End If
+        End If
+
+        Using br As New SolidBrush(bg)
+            g.FillRectangle(br, e.Bounds)
+        End Using
+
+        ' Righe di griglia a tema (le GridLines di sistema sono disattivate).
+        Using pn As New Pen(UiTheme.Border, 1.0F)
+            g.DrawLine(pn, e.Bounds.Left, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1)
+            g.DrawLine(pn, e.Bounds.Right - 1, e.Bounds.Top, e.Bounds.Right - 1, e.Bounds.Bottom)
+        End Using
+
+        Dim tr As Rectangle = e.Bounds
+
+        ' Prima colonna: casella di spunta a tema.
+        If e.ColumnIndex = 0 AndAlso lv.CheckBoxes Then
+            Dim bx As Integer = e.Bounds.X + 4
+            Dim by As Integer = e.Bounds.Top + (e.Bounds.Height - 13) \ 2
+            Dim box As New Rectangle(bx, by, 13, 13)
+
+            If e.Item.Checked Then
+                Using bb As New SolidBrush(UiTheme.Accent)
+                    g.FillRectangle(bb, box)
+                End Using
+                Using cp As New Pen(UiTheme.BgSidebar, 1.8F)
+                    g.DrawLine(cp, bx + 3, by + 7, bx + 5, by + 9)
+                    g.DrawLine(cp, bx + 5, by + 9, bx + 10, by + 4)
+                End Using
+            Else
+                Using bb As New SolidBrush(UiTheme.BgField)
+                    g.FillRectangle(bb, box)
+                End Using
+            End If
+
+            Using bp As New Pen(UiTheme.Border, 1.0F)
+                g.DrawRectangle(bp, box)
+            End Using
+
+            tr.X += 22
+            tr.Width -= 24
+        Else
+            tr.X += 4
+            tr.Width -= 6
+        End If
+
+        Dim flags As TextFormatFlags = TextFormatFlags.VerticalCenter Or TextFormatFlags.SingleLine Or TextFormatFlags.EndEllipsis
+        If e.ColumnIndex < lv.Columns.Count Then
+            Select Case lv.Columns(e.ColumnIndex).TextAlign
+                Case HorizontalAlignment.Center
+                    flags = flags Or TextFormatFlags.HorizontalCenter
+                Case HorizontalAlignment.Right
+                    flags = flags Or TextFormatFlags.Right
+            End Select
+        End If
+
+        TextRenderer.DrawText(g, e.SubItem.Text, e.SubItem.Font, tr, UiTheme.Txt, flags)
+
     End Sub
 
     Private Sub CheckBoxKeepUnsortedDuplicates_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxKeepUnsortedDuplicates.CheckedChanged
@@ -4568,4 +4660,3 @@ End Class
 ' Dim UserName As String = Environment.UserName
 ''Dim UserName As String = Security.Principal.WindowsIdentity.GetCurrent().Name
 ' Dim StatusChangeDate = DateTime.Now
-
