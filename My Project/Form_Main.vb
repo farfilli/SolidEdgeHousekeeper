@@ -44,7 +44,7 @@ Public Class Form_Main
                     End If
 
                 Else
-                    BT_Update.BackColor = UiTheme.BgField
+                    BT_Update.BackColor = Color.Transparent
                 End If
             End If
         End Set
@@ -3171,6 +3171,12 @@ Public Class Form_Main
             ThemeApplier.ApplyToolStrip(Menu_ListViewFile)
             CaricaImmagine16x16(TabPage_ImageList, "Checked", ThemeApplier.CheckedImage)
             CaricaImmagine16x16(TabPage_ImageList, "Unchecked", ThemeApplier.UncheckedImage)
+
+            ' Il BackColor delle voci ToolStrip e' un segnale (arancione =
+            ' lista da aggiornare) e non viene toccato dal walk: se non sta
+            ' segnalando, va riallineato al tema.
+            If Not ListViewFilesOutOfDate Then BT_Update.BackColor = Color.Transparent
+
             Refresh()
             Return
         End If
