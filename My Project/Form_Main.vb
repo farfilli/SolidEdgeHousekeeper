@@ -44,7 +44,7 @@ Public Class Form_Main
                     End If
 
                 Else
-                    BT_Update.BackColor = Color.FromName("Control")
+                    BT_Update.BackColor = UiTheme.BgField
                 End If
             End If
         End Set
@@ -1681,6 +1681,12 @@ Public Class Form_Main
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Startup(SavingPresets:=False)
+
+        ' Tema scuro (SE-Theme.vb + SE-ThemeApplier.vb).
+        ' Va applicato DOPO Startup, che assegna il renderer MySR ai toolstrip.
+        UiTheme.SetTheme(True)
+        ThemeApplier.Apply(Me)
+        ThemeApplier.ApplyToolStrip(Menu_ListViewFile)
     End Sub
 
 
@@ -3737,7 +3743,7 @@ Public Class Form_Main
         If Q IsNot Nothing Then
             If SSDoc.SetPropValue(PropertySet, PropertyNameEnglish, Q, AddProperty:=True) Then
                 hitinfo.SubItem.Text = Q
-                hitinfo.SubItem.BackColor = Color.White
+                hitinfo.SubItem.BackColor = UiTheme.BgField
 
                 SSDoc.Save()
             Else

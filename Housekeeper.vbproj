@@ -298,6 +298,8 @@
     <Compile Include="My Project\FormPropertyFilterOptions.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="My Project\SE-Theme.vb" />
+    <Compile Include="My Project\SE-ThemeApplier.vb" />
     <Compile Include="My Project\TaskCheckFilename.vb" />
     <Compile Include="My Project\TaskSetDocumentStatus.vb" />
     <Compile Include="My Project\TaskUpdateBlocks.vb" />
